@@ -12,6 +12,7 @@ import Contact from './pages/Contact'
 function Navigation() {
   const location = useLocation()
   const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,19 +22,41 @@ function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location])
+
   const isActive = (path) => location.pathname === path
 
   return (
-    <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-      <Link to="/" className="nav-logo">P&P</Link>
-      <ul className="nav-links">
-        <li><Link to="/" className={isActive('/') ? 'active' : ''}>Home</Link></li>
-        <li><Link to="/about" className={isActive('/about') ? 'active' : ''}>About</Link></li>
-        <li><Link to="/blog" className={isActive('/blog') ? 'active' : ''}>Blog</Link></li>
-        <li><Link to="/services" className={isActive('/services') ? 'active' : ''}>Services</Link></li>
-        <li><Link to="/contact" className={isActive('/contact') ? 'active' : ''}>Contact</Link></li>
-      </ul>
-    </nav>
+    <>
+      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+        <Link to="/" className="nav-logo">P&P</Link>
+        <ul className="nav-links">
+          <li><Link to="/" className={isActive('/') ? 'active' : ''}>Home</Link></li>
+          <li><Link to="/about" className={isActive('/about') ? 'active' : ''}>About</Link></li>
+          <li><Link to="/blog" className={isActive('/blog') ? 'active' : ''}>Blog</Link></li>
+          <li><Link to="/services" className={isActive('/services') ? 'active' : ''}>Services</Link></li>
+          <li><Link to="/contact" className={isActive('/contact') ? 'active' : ''}>Contact</Link></li>
+        </ul>
+        <button 
+          className={`nav-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+      <div className={`nav-mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+        <Link to="/" className={isActive('/') ? 'active' : ''}>Home</Link>
+        <Link to="/about" className={isActive('/about') ? 'active' : ''}>About</Link>
+        <Link to="/blog" className={isActive('/blog') ? 'active' : ''}>Blog</Link>
+        <Link to="/services" className={isActive('/services') ? 'active' : ''}>Services</Link>
+        <Link to="/contact" className={isActive('/contact') ? 'active' : ''}>Contact</Link>
+      </div>
+    </>
   )
 }
 
